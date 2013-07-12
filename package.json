@@ -19,5 +19,10 @@
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/jarofghosts/wack/issues"
+  },
+  "dependencies": {
+    "through": "~2.3.4",
+    "file-content-stream": "0.0.2",
+    "dir-stream": "0.0.3"
   }
 }
