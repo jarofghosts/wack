@@ -1,0 +1,23 @@
+{
+  "name": "wack",
+  "version": "0.0.0",
+  "description": "wack ack",
+  "main": "index.js",
+  "scripts": {
+    "test": "node test/test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/jarofghosts/wack.git"
+  },
+  "keywords": [
+    "ack",
+    "grep",
+    "search"
+  ],
+  "author": "jesse keane",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jarofghosts/wack/issues"
+  }
+}
