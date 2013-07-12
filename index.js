@@ -1,12 +1,12 @@
-var through = require('through'),
+#!/usr/bin/env node
+
+var c = require('commander'),
+    through = require('through'),
     dirstream = require('dir-stream'),
     filestream = require('file-content-stream'),
     Readable = require('stream').Readable,
     rs = Readable(),
-    regex = new RegExp(process.argv[3]);
-
-rs.push(process.argv[2]);
-rs.push(null);
+    regex = null;
 
 tr = through(write, end);
 
@@ -19,5 +19,18 @@ function write(obj) {
 function end() {
   this.queue(null);
 }
+
+c
+  .version('0.0.0')
+  .option('-d, --dir [dirname]', 'search through directory | default cwd')
+  .option('-i, --ignorecase', 'ignore regex case')
+  .parse(process.argv);
+
+if (c.args.length) {
+  regex = c.ignorecase ? new RegExp(c.args[0], "i") : new RegExp(c.args[0]);
+}
+
+rs.push(c.dir || process.cwd());
+rs.push(null);
 
 rs.pipe(dirstream()).pipe(filestream()).pipe(tr).pipe(process.stdout);
