@@ -22,7 +22,7 @@
   },
   "dependencies": {
     "through": "~2.3.4",
-    "file-content-stream": "0.0.2",
+    "file-content-stream": "0.0.3",
     "dir-stream": "0.0.3"
   }
 }
