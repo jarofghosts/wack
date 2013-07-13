@@ -22,6 +22,7 @@ will search the current dir (and recursively all sub dirs) for `searchTerm`
 * `-d or --dir <dir>` search different dir.
 * `-i or --ignorecase` to ignore case
 * `-n or --norecurse` to prevent subdirectory search
+* `-m or --maxcount <num>` show max of `<num>` results per file
 * `-C or --nocolor` to turn off output coloring
 * `-1 or --justone` to only return the very first result
 * `-v or --invertmatch` to return lines that do **not** match the searchTerm
