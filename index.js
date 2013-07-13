@@ -13,11 +13,11 @@ tr = through(write, end);
 
 function write(obj) {
   var match = options.regex.exec(obj.data);
-  if (match) {
+  if ((match && !options.invert) || (!match && options.invert)) {
     var filename = obj.filename.replace(new RegExp('^' + options.dir), ''),
         line = obj.line + ':',
         str = obj.data;
-    if (options.nocolor) {
+    if (options.nocolor || options.invert) {
       this.queue(filename + ' ' + line + ' ' + str + '\n');
     } else {
       var finalString = str.substring(0, match.index) + 
@@ -26,6 +26,7 @@ function write(obj) {
           colorized = color.green(filename) + ' ' + color.wrap(line, color.colors.WHITE, color.styles.bold) + finalString;
       this.queue(colorized);
     }
+    if (options.justone) tr.queue(null);
   }
 }
 
@@ -39,6 +40,8 @@ c
   .option('-d, --dir <dirname>', 'search through directory | default cwd')
   .option('-i, --ignorecase', 'ignore regex case')
   .option('-n, --norecurse', 'no subdirectory checking')
+  .option('-v, --invertmatch', 'show non-matching lines')
+  .option('-1, --justone', 'show only the first result')
   .option('-C, --nocolor', 'turn colorizing off for results')
   .parse(process.argv);
 
@@ -48,6 +51,8 @@ if (c.args.length) {
 
 options.dir = c.dir || process.cwd();
 options.nocolor = c.nocolor;
+options.justone = c.justone;
+options.invert = c.invertmatch;
 options.ignorecase = c.ignorecase;
 options.norecurse = c.norecurse;
 

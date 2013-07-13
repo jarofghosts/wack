@@ -23,6 +23,8 @@ will search the current dir (and recursively all sub dirs) for `searchTerm`
 * `-i or --ignorecase` to ignore case
 * `-n or --norecurse` to prevent subdirectory search
 * `-C or --nocolor` to turn off output coloring
+* `-1 or --justone` to only return the very first result
+* `-v or --invertmatch` to return lines that do **not** match the searchTerm
 * `-h or --help` for help
 * `-V or --version` for version
 
