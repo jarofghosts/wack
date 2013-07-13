@@ -7,6 +7,7 @@ var c = require('commander'),
     color = require('bash-color'),
     Readable = require('stream').Readable,
     rs = Readable(),
+    currentFile = null,
     options = {};
 
 tr = through(write, end);
@@ -18,12 +19,20 @@ function write(obj) {
         line = obj.line + ':',
         str = obj.data;
     if (options.nocolor || options.invert) {
-      this.queue(filename + ' ' + line + ' ' + str + '\n');
+      if (filename != currentFile) {
+        currentFile = filename;
+        this.queue(filename + '\n');
+      }
+      this.queue(' ' + line + ' ' + str + '\n');
     } else {
+      if (filename != currentFile) {
+        currentFile = filename;
+        this.queue(color.green(filename) + '\n');
+      }
       var finalString = str.substring(0, match.index) + 
         color.yellow(match[0], true) +
         str.substring(match.index + match[0].length) + '\n',
-          colorized = color.green(filename) + ' ' + color.wrap(line, color.colors.WHITE, color.styles.bold) + finalString;
+          colorized = ' ' + color.wrap(line, color.colors.WHITE, color.styles.bold) + finalString;
       this.queue(colorized);
     }
     if (options.justone) tr.queue(null);
