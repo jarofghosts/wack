@@ -31,8 +31,8 @@ function write(obj) {
       }
       var finalString = str.substring(0, match.index) + 
         color.yellow(match[0], true) +
-        str.substring(match.index + match[0].length) + '\n',
-          colorized = ' ' + color.wrap(line, color.colors.WHITE, color.styles.bold) + finalString;
+        str.substring(match.index + match[0].length),
+          colorized = ' ' + color.wrap(line, color.colors.WHITE, color.styles.bold) + ' ' + finalString + '\n';
       this.queue(colorized);
     }
     if (options.justone) tr.queue(null);
