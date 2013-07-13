@@ -4,7 +4,7 @@ var c = require('commander'),
     through = require('through'),
     dirstream = require('dir-stream'),
     filestream = require('file-content-stream'),
-    ansify = require('colorize').ansify,
+    color = require('bash-color'),
     Readable = require('stream').Readable,
     rs = Readable(),
     options = {};
@@ -20,10 +20,11 @@ function write(obj) {
     if (options.nocolor) {
       this.queue(filename + ' ' + line + ' ' + str + '\n');
     } else {
-      var finalString = str.substring(0, match.index) + '#magenta[' +
-        str.substring(match.index, match.index + match[0].length) + ']' +
-        str.substring(match.index + match[0].length) + '\n';
-      this.queue(ansify('#green[' + filename + '] #bold[' + line + '] ' + finalString));
+      var finalString = str.substring(0, match.index) + 
+        color.yellow(match[0], true) +
+        str.substring(match.index + match[0].length) + '\n',
+          colorized = color.green(filename) + ' ' + color.wrap(line, color.colors.WHITE, color.styles.bold) + finalString;
+      this.queue(colorized);
     }
   }
 }

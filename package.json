@@ -29,6 +29,6 @@
     "file-content-stream": "0.0.3",
     "dir-stream": "0.0.5",
     "commander": "~1.3.0",
-    "colorize": "~0.1.0"
+    "bash-color": "0.0.3"
   }
 }
