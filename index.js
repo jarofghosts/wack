@@ -35,7 +35,7 @@ function end() {
 }
 
 c
-  .version('0.0.2')
+  .version('0.0.3')
   .usage('[options] pattern')
   .option('-d, --dir <dirname>', 'search through directory | default cwd')
   .option('-i, --ignorecase', 'ignore regex case')
