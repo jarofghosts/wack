@@ -3,6 +3,9 @@
   "version": "0.0.0",
   "description": "wack ack",
   "main": "index.js",
+  "bin": {
+    "wack": "./index.js"
+  },
   "scripts": {
     "test": "node test/test.js"
   },
@@ -20,6 +23,7 @@
   "bugs": {
     "url": "https://github.com/jarofghosts/wack/issues"
   },
+  "preferGlobal": true,
   "dependencies": {
     "through": "~2.3.4",
     "file-content-stream": "0.0.3",
