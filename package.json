@@ -23,7 +23,7 @@
   "dependencies": {
     "through": "~2.3.4",
     "file-content-stream": "0.0.3",
-    "dir-stream": "0.0.3",
+    "dir-stream": "0.0.5",
     "commander": "~1.3.0"
   }
 }

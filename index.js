@@ -33,4 +33,5 @@ if (c.args.length) {
 rs.push(c.dir || process.cwd());
 rs.push(null);
 
-rs.pipe(dirstream()).pipe(filestream()).pipe(tr).pipe(process.stdout);
+rs.pipe(dirstream({ onlyFiles: true })).pipe(filestream()).pipe(tr).pipe(process.stdout);
+
