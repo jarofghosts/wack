@@ -55,7 +55,7 @@ c
   .usage('[options] pattern')
   .option('-d, --dir <dirname>', 'search through directory | default cwd')
   .option('-i, --ignorecase', 'ignore regex case')
-  .option('-m, --maxcount <num>', 'only show maximum of <num> results per file')
+  .option('-m, --maxcount <num>', 'only show maximum of <num> results per file', parseInt)
   .option('-n, --norecurse', 'no subdirectory checking')
   .option('-v, --invertmatch', 'show non-matching lines')
   .option('-1, --justone', 'show only the first result')
@@ -64,6 +64,8 @@ c
 
 if (c.args.length) {
   options.regex = c.ignorecase ? new RegExp(c.args[0], "ig") : new RegExp(c.args[0], "g");
+} else {
+  c.help();
 }
 
 options.dir = c.dir || process.cwd();
