@@ -1,7 +1,7 @@
 wack
 ====
 
-wack is like ack but wack.
+wack stands for Wack ACK
 
 ## what?
 
@@ -15,7 +15,7 @@ wack is like ack but wack.
 
 `wack searchTerm`
 
-will search the current dir (and recursively all subs) for `searchTerm`
+will search the current dir (and recursively all sub dirs) for `searchTerm`
 
 ## options
 
