@@ -8,6 +8,7 @@ var c = require('commander'),
     Readable = require('stream').Readable,
     rs = Readable(),
     currentFile = null,
+    fileCount = 0,
     options = {};
 
 tr = through(write, end);
@@ -17,24 +18,30 @@ function write(obj) {
   if ((match && !options.invert) || (!match && options.invert)) {
     var filename = obj.filename.replace(new RegExp('^' + options.dir), ''),
         line = obj.line + ':',
-        str = obj.data;
+        str = obj.data,
+        fileOut = filename,
+        toOutput = '';
     if (options.nocolor || options.invert) {
-      if (filename != currentFile) {
-        currentFile = filename;
-        this.queue(filename + '\n');
-      }
-      this.queue(' ' + line + ' ' + str + '\n');
+      toOutput = ' ' + line + ' ' + str + '\n';
     } else {
-      if (filename != currentFile) {
-        currentFile = filename;
-        this.queue(color.green(filename) + '\n');
-      }
+
+      fileOut = color.green(filename);
       var finalString = str.substring(0, match.index) + 
-        color.yellow(match[0], true) +
-        str.substring(match.index + match[0].length),
-          colorized = ' ' + color.wrap(line, color.colors.WHITE, color.styles.bold) + ' ' + finalString + '\n';
-      this.queue(colorized);
+                        color.yellow(match[0], true) +
+                        str.substring(match.index + match[0].length),
+          toOutput = ' ' + color.wrap(line, color.colors.WHITE, color.styles.bold) + ' ' + finalString + '\n';
+    
     }
+
+    if (filename != currentFile) {
+      fileCount = 1;
+      currentFile = filename;
+      this.queue(fileOut + '\n');
+    } else {
+      if (options.maxcount) fileCount++;
+      if (fileCount > options.maxcount) return
+    }
+    this.queue(toOutput);
     if (options.justone) tr.queue(null);
   }
 }
@@ -48,6 +55,7 @@ c
   .usage('[options] pattern')
   .option('-d, --dir <dirname>', 'search through directory | default cwd')
   .option('-i, --ignorecase', 'ignore regex case')
+  .option('-m, --maxcount <num>', 'only show maximum of <num> results per file')
   .option('-n, --norecurse', 'no subdirectory checking')
   .option('-v, --invertmatch', 'show non-matching lines')
   .option('-1, --justone', 'show only the first result')
@@ -61,6 +69,7 @@ if (c.args.length) {
 options.dir = c.dir || process.cwd();
 options.nocolor = c.nocolor;
 options.justone = c.justone;
+options.maxcount = c.maxcount;
 options.invert = c.invertmatch;
 options.ignorecase = c.ignorecase;
 options.norecurse = c.norecurse;
