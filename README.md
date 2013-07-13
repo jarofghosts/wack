@@ -19,8 +19,10 @@ will search the current dir (and recursively all sub dirs) for `searchTerm`
 
 ## options
 
-* `-d or --dir [dir]` search different dir.
+* `-d or --dir <dir>` search different dir.
 * `-i or --ignorecase` to ignore case
+* `-n or --norecurse` to prevent subdirectory search
+* `-C or --nocolor` to turn off output coloring
 * `-h or --help` for help
 * `-V or --version` for version
 
