@@ -37,20 +37,22 @@ c
   .version('0.0.1')
   .usage('[options] pattern')
   .option('-d, --dir <dirname>', 'search through directory | default cwd')
-  .option('-i, --ignore-case', 'ignore regex case')
+  .option('-i, --ignorecase', 'ignore regex case')
+  .option('-n, --norecurse', 'no subdirectory checking')
   .option('-C, --nocolor', 'turn colorizing off for results')
   .parse(process.argv);
 
 if (c.args.length) {
-  options.regex = c['ignore-case'] ? new RegExp(c.args[0], "ig") : new RegExp(c.args[0], "g");
+  options.regex = c.ignorecase ? new RegExp(c.args[0], "ig") : new RegExp(c.args[0], "g");
 }
 
 options.dir = c.dir || process.cwd();
 options.nocolor = c.nocolor;
-options.ignorecase = c['ignore-case'];
+options.ignorecase = c.ignorecase;
+options.norecurse = c.norecurse;
 
 rs.push(options.dir);
 rs.push(null);
 
-rs.pipe(dirstream({ onlyFiles: true })).pipe(filestream()).pipe(tr).pipe(process.stdout);
+rs.pipe(dirstream({ onlyFiles: true, noRecurse: options.norecurse })).pipe(filestream()).pipe(tr).pipe(process.stdout);
 
