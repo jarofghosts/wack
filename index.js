@@ -75,8 +75,8 @@ c
   .option('-m, --maxcount <num>', 'only show maximum of <num> results per file', parseInt)
   .option('-n, --norecurse', 'no subdirectory checking')
   .option('-v, --invertmatch', 'show non-matching lines')
-  .option('-t, --type', 'comma separated list of types to limit search to')
-  .option('-T, --notype', 'comma separated list of types to exclude from search')
+  .option('-t, --type <type1 [,type2,...]>', 'comma separated list of types to limit search to')
+  .option('-T, --notype <type1 [,type2,...]>', 'comma separated list of types to exclude from search')
   .option('-1, --justone', 'show only the first result')
   .option('-C, --nocolor', 'turn colorizing off for results')
   .parse(process.argv);
