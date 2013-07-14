@@ -4,6 +4,7 @@ var c = require('commander'),
     through = require('through'),
     dirstream = require('dir-stream'),
     filestream = require('file-content-stream'),
+    type = require('ack-types'),
     color = require('bash-color'),
     Readable = require('stream').Readable,
     rs = Readable(),
@@ -14,6 +15,22 @@ var c = require('commander'),
 tr = through(write, end);
 
 function write(obj) {
+  if (options.exclude.length) {
+    var i = 0,
+        l = options.exclude.length;
+    for (; i < l; ++i) {
+      if (type.compare(obj.filename, options.exclude[i])) return
+    }
+  }
+  if (options.types.length) {
+    var i = 0,
+        proceed = false,
+        l = options.types.length;
+    for (; i < l; ++i) {
+      if (type.compare(obj.filename, options.types[i])) proceed = true;
+    }
+    if (!proceed) return
+  }
   var match = options.regex.exec(obj.data);
   if ((match && !options.invert) || (!match && options.invert)) {
     var filename = obj.filename.replace(new RegExp('^' + options.dir), ''),
@@ -58,6 +75,8 @@ c
   .option('-m, --maxcount <num>', 'only show maximum of <num> results per file', parseInt)
   .option('-n, --norecurse', 'no subdirectory checking')
   .option('-v, --invertmatch', 'show non-matching lines')
+  .option('-t, --type', 'comma separated list of types to limit search to')
+  .option('-T, --notype', 'comma separated list of types to exclude from search')
   .option('-1, --justone', 'show only the first result')
   .option('-C, --nocolor', 'turn colorizing off for results')
   .parse(process.argv);
@@ -75,7 +94,8 @@ options.maxcount = c.maxcount;
 options.invert = c.invertmatch;
 options.ignorecase = c.ignorecase;
 options.norecurse = c.norecurse;
-
+options.types = c.type ? c.type.replace(/\s+/, '').split(',') : [];
+options.exclude = c.notype ? c.notype.replace(/\s+/, '').split(',') : [];
 rs.push(options.dir);
 rs.push(null);
 
