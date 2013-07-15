@@ -1,6 +1,6 @@
 {
   "name": "wack",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "wack ack",
   "main": "index.js",
   "bin": {
