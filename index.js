@@ -94,7 +94,7 @@ function streamWack(settings) {
 
 if (isCli) {
   c
-    .version('0.0.8')
+    .version('0.0.9')
     .usage('[options] pattern')
     .option('-d, --dir <dirname>', 'search through directory | default cwd')
     .option('-i, --ignorecase', 'ignore regex case')
