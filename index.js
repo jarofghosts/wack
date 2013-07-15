@@ -4,14 +4,14 @@ var c = require('commander'),
     through = require('through'),
     dirstream = require('dir-stream'),
     filestream = require('file-content-stream'),
+    es = require('event-stream'),
     type = require('ack-types'),
     color = require('bash-color'),
     Readable = require('stream').Readable,
-    rs = Readable(),
     path = require('path'),
     isCli = (require.main === module);;
 
-module.exports = wack;
+module.exports = streamWack;
 
 function wack(options) {
 
@@ -85,6 +85,13 @@ function wack(options) {
   return tr;
 
 }
+
+function streamWack(settings) {
+  return es.pipeline(dirstream({ onlyFiles: true, noRecurse: settings.noRecurse }),
+                     filestream(),
+                     wack(settings));
+}
+
 if (isCli) {
   c
     .version('0.0.8')
@@ -115,9 +122,11 @@ if (isCli) {
     pattern: c.args[0]
   };
 
+  var rs = Readable();
+
   rs.push(c.dir ? path.normalize(c.dir) : process.cwd());
   rs.push(null);
 
-  rs.pipe(dirstream({ onlyFiles: true, noRecurse: c.norecurse })).pipe(filestream()).pipe(wack(settings)).pipe(process.stdout);
+  rs.pipe(streamWack(settings)).pipe(process.stdout);
 }
 
