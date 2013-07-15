@@ -87,7 +87,7 @@ function wack(options) {
 }
 if (isCli) {
   c
-    .version('0.0.7')
+    .version('0.0.8')
     .usage('[options] pattern')
     .option('-d, --dir <dirname>', 'search through directory | default cwd')
     .option('-i, --ignorecase', 'ignore regex case')
