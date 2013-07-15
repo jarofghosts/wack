@@ -124,7 +124,6 @@ if (isCli) {
   rs.push(c.dir ? path.normalize(c.dir) : process.cwd());
   rs.push(null);
 
-  //rs.pipe(streamWack(settings)).pipe(process.stdout);
-  rs.pipe(dirstream({ onlyFiles: true })).pipe(filestream()).pipe(wack(settings)).pipe(process.stdout);
+  rs.pipe(streamWack(settings)).pipe(process.stdout);
 }
 
