@@ -87,7 +87,7 @@ function wack(options) {
 }
 
 function streamWack(settings) {
-  return es.pipeline(dirstream({ onlyFiles: true, noRecurse: settings.noRecurse }),
+  return es.pipeline(dirstream({ onlyFiles: true, noRecurse: settings.norecurse }),
                      filestream(),
                      wack(settings));
 }

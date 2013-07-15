@@ -47,7 +47,7 @@ you get the idea. Note that `pattern` is required.
 * `-h or --help` for help
 * `-V or --version` for version
 
-for stream options, use the full flag name (ie `nocolor`, `ignorcase`, etc) and `pattern` for the search pattern.
+for stream options, use the full flag name (ie `nocolor`, `ignorecase`, etc) and `pattern` for the search pattern.
 
 ## file types
 
