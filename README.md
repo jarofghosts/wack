@@ -7,7 +7,7 @@ wack stands for Wack ACK
 
 ## what?
 
-`wack` aims to be a bit like ack but implemented in node. It doesn't require being wack, but it certainly is currently.
+`wack` aims to be a bit like [ack](http://beyondgrep.com/) but implemented in node. It doesn't aim to be wack, but it kind of is at the moment.
 
 ## installation
 
