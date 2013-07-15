@@ -27,14 +27,14 @@ function wack(options) {
   options.exclude = options.notype ? options.notype.replace(/\s+/, '').split(',') : [];
   options.regex = options.ignorecase ? new RegExp(options.pattern, "ig") : new RegExp(options.pattern, "g");
   
-  tr = through(write, end);
+  tr = through(write);
 
   function write(obj) {
     if (options.exclude.length) {
       var i = 0,
           l = options.exclude.length;
       for (; i < l; ++i) {
-        if (type.compare(obj.filename, options.exclude[i])) return
+        if (type.compare(obj.filename, options.exclude[i])) return;
       }
     }
     if (options.types.length) {
@@ -44,7 +44,7 @@ function wack(options) {
       for (; i < l; ++i) {
         if (type.compare(obj.filename, options.types[i])) proceed = true;
       }
-      if (!proceed) return
+      if (!proceed) return;
     }
     var match = options.regex.exec(obj.data);
     if ((match && !options.invertmatch) || (!match && options.invertmatch)) {
@@ -56,7 +56,6 @@ function wack(options) {
       if (options.nocolor || options.invertmatch) {
         toOutput = ' ' + line + ' ' + str + '\n';
       } else {
-
         fileOut = color.green(filename);
         var finalString = str.substring(0, match.index) + 
                           color.yellow(match[0], true) +
@@ -70,16 +69,14 @@ function wack(options) {
         currentFile = filename;
         this.queue(fileOut + '\n');
       } else {
-        if (options.maxcount) fileCount++;
-        if (fileCount > options.maxcount) return
+        if (options.maxcount) {
+          fileCount++;
+          if (fileCount > options.maxcount) return;
+        }
       }
       this.queue(toOutput);
       if (options.justone) tr.queue(null);
     }
-  }
-
-  function end() {
-    this.queue(null);
   }
 
   return tr;
@@ -87,7 +84,7 @@ function wack(options) {
 }
 
 function streamWack(settings) {
-  return es.pipeline(dirstream({ onlyFiles: true, noRecurse: settings.norecurse }),
+  return es.pipeline(dirstream({ onlyFiles: true, noRecurse: settings.norecurse, ignore: ['.git', '.hg', '.svn'] }),
                      filestream(),
                      wack(settings));
 }
@@ -127,6 +124,7 @@ if (isCli) {
   rs.push(c.dir ? path.normalize(c.dir) : process.cwd());
   rs.push(null);
 
-  rs.pipe(streamWack(settings)).pipe(process.stdout);
+  //rs.pipe(streamWack(settings)).pipe(process.stdout);
+  rs.pipe(dirstream({ onlyFiles: true })).pipe(filestream()).pipe(wack(settings)).pipe(process.stdout);
 }
 
