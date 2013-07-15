@@ -12,7 +12,6 @@ badTimeout = setTimeout(function () {
 }, 500);
 
 ws._write = function (data, enc, next) {
-  console.log(data)
   if (data) clearTimeout(badTimeout);
   next();
 }
