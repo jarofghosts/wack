@@ -1,6 +1,8 @@
 wack
 ====
 
+[![Build Status](https://travis-ci.org/jarofghosts/wack.png?branch=master)](https://travis-ci.org/jarofghosts/wack)
+
 wack stands for Wack ACK
 
 ## what?
