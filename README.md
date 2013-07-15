@@ -17,6 +17,20 @@ wack stands for Wack ACK
 
 will search the current dir (and recursively all sub dirs) for `searchTerm`
 
+Alternatively, you can pipe to wack with a stream of directory names and it will stream search results.
+
+That looks kinda like this (assuming an imaginary file of directory names \n separated):
+
+```js
+var wack = require('wack'),
+    split = require('split'),
+    fs = require('fs');
+
+fs.createReadStream('lyricDirs.txt').pipe(split()).pipe(wack({ pattern: 'blitzkrieg bop' })).pipe(fs.createWriteStream('ramones.txt'));
+```
+
+you get the idea. Note that `pattern` is required.
+
 ## options
 
 * `-d or --dir <dir>` search different dir.
@@ -30,6 +44,8 @@ will search the current dir (and recursively all sub dirs) for `searchTerm`
 * `-v or --invertmatch` to return lines that do **not** match the searchTerm
 * `-h or --help` for help
 * `-V or --version` for version
+
+for stream options, use the full flag name (ie `nocolor`, `ignorcase`, etc) and `pattern` for the search pattern.
 
 ## file types
 
