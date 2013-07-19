@@ -52,7 +52,7 @@ function wack(options) {
           line = obj.line + ':',
           str = obj.data,
           fileOut = filename,
-          toOutput = '';
+          toOutput;
       if (options.nocolor || options.invertmatch) {
         toOutput = ' ' + line + ' ' + str + '\n';
       } else {
