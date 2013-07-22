@@ -23,29 +23,11 @@ function wack(options) {
   
   if (!options.dir) options.dir = process.cwd();
   if (!options.dir.match(/^\//)) options.dir = path.normalize(options.dir);
-  options.types = options.type ? options.type.replace(/\s+/, '').split(',') : [];
-  options.exclude = options.notype ? options.notype.replace(/\s+/, '').split(',') : [];
   options.regex = options.ignorecase ? new RegExp(options.pattern, "ig") : new RegExp(options.pattern, "g");
   
   tr = through(write);
 
   function write(obj) {
-    if (options.exclude.length) {
-      var i = 0,
-          l = options.exclude.length;
-      for (; i < l; ++i) {
-        if (type.compare(obj.filename, options.exclude[i])) return;
-      }
-    }
-    if (options.types.length) {
-      var i = 0,
-          proceed = false,
-          l = options.types.length;
-      for (; i < l; ++i) {
-        if (type.compare(obj.filename, options.types[i])) proceed = true;
-      }
-      if (!proceed) return;
-    }
     var match = options.regex.exec(obj.data);
     if ((match && !options.invertmatch) || (!match && options.invertmatch)) {
       var filename = obj.filename.substring(options.dir.length),
@@ -87,6 +69,9 @@ function streamWack(settings) {
 
   var policeArgs = {};
 
+  settings.types = settings.type ? settings.type.replace(/\s+/, '').split(',') : [];
+  settings.exclude = settings.notype ? settings.notype.replace(/\s+/, '').split(',') : [];
+
   if (settings.knowntypes) {
     policeArgs.verify = [];
     var extensions = type.allExtensions(),
@@ -96,6 +81,28 @@ function streamWack(settings) {
       policeArgs.verify.push(new RegExp('\\.' + extensions[i] + '$', 'i'));
     }
 
+  }
+  if (settings.exclude.length) {
+    policeArgs.exclude = [];
+    var i = 0,
+        l = settings.exclude.length;
+    for (; i < l; ++i) {
+      var extensions = type.reverseLookup(settings.exclude[i]),
+          j = 0,
+          k = extensions.length;
+      policeArgs.exclude.push(new RegExp('\\.' + extensions[j] + '$', 'i'));
+    }
+  }
+  if (settings.types.length) {
+    policeArgs.verify = policeArgs.verify || [];
+    var i = 0,
+        l = settings.types.length;
+    for (; i < l; ++i) {
+      var extensions = type.reverseLookup(settings.types[i]),
+          j = 0,
+          k = extensions.length;
+      policeArgs.verify.push(new RegExp('\\.' + extensions[j] + '$', 'i'));
+    }
   }
 
   return es.pipeline(dirstream({ onlyFiles: true, noRecurse: settings.norecurse, ignore: ['.git', '.hg', '.svn'] }),
