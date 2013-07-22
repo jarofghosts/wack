@@ -5,6 +5,7 @@ var c = require('commander'),
     dirstream = require('dir-stream'),
     filestream = require('file-content-stream'),
     es = require('event-stream'),
+    police = require('stream-police'),
     type = require('ack-types'),
     color = require('bash-color'),
     Readable = require('stream').Readable,
@@ -16,13 +17,12 @@ module.exports = streamWack;
 function wack(options) {
 
   var currentFile = null,
-      fileCount = 0;
+      fileCount = 0;;
 
   options = options || {};
   
   if (!options.dir) options.dir = process.cwd();
   if (!options.dir.match(/^\//)) options.dir = path.normalize(options.dir);
-
   options.types = options.type ? options.type.replace(/\s+/, '').split(',') : [];
   options.exclude = options.notype ? options.notype.replace(/\s+/, '').split(',') : [];
   options.regex = options.ignorecase ? new RegExp(options.pattern, "ig") : new RegExp(options.pattern, "g");
@@ -84,17 +84,33 @@ function wack(options) {
 }
 
 function streamWack(settings) {
+
+  var policeArgs = {};
+
+  if (settings.knowntypes) {
+    policeArgs.verify = [];
+    var extensions = type.allExtensions(),
+        i = 0,
+        l = extensions.length;
+    for (; i < l; ++i) {
+      policeArgs.verify.push(new RegExp('\\.' + extensions[i] + '$', 'i'));
+    }
+
+  }
+
   return es.pipeline(dirstream({ onlyFiles: true, noRecurse: settings.norecurse, ignore: ['.git', '.hg', '.svn'] }),
+                     police(policeArgs),
                      filestream(),
                      wack(settings));
 }
 
 if (isCli) {
   c
-    .version('0.1.1')
+    .version('0.1.3')
     .usage('[options] pattern')
     .option('-d, --dir <dirname>', 'search through directory | default cwd')
     .option('-i, --ignorecase', 'ignore regex case')
+    .option('-k, --knowntypes', 'only include known file types')
     .option('-m, --maxcount <num>', 'only show maximum of <num> results per file', parseInt)
     .option('-n, --norecurse', 'no subdirectory checking')
     .option('-v, --invertmatch', 'show non-matching lines')
@@ -113,6 +129,7 @@ if (isCli) {
     norecurse: c.norecurse,
     invertmatch: c.invertmatch,
     type: c.type,
+    knowntypes: c.knowntypes,
     notype: c.notype,
     justone: c.justone,
     nocolor: c.nocolor,
