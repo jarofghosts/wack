@@ -12,7 +12,7 @@ badTimeout = setTimeout(function () {
 }, 500);
 
 ws._write = function (data, enc, next) {
-  if (data) clearTimeout(badTimeout);
+  if (data.toString().match(/hey/)) clearTimeout(badTimeout);
   next();
 }
 rs._read = function () {
