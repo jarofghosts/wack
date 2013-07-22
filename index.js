@@ -17,7 +17,7 @@ module.exports = streamWack;
 function wack(options) {
 
   var currentFile = null,
-      fileCount = 0;;
+      fileCount = 0;
 
   options = options || {};
   
@@ -113,7 +113,7 @@ function streamWack(settings) {
 
 if (isCli) {
   c
-    .version('0.1.3')
+    .version('0.1.4')
     .usage('[options] pattern')
     .option('-d, --dir <dirname>', 'search through directory | default cwd')
     .option('-i, --ignorecase', 'ignore regex case')
