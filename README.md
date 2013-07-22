@@ -39,6 +39,7 @@ you get the idea. Note that `pattern` is required.
 * `-i or --ignorecase` to ignore case
 * `-n or --norecurse` to prevent subdirectory search
 * `-m or --maxcount <num>` show max of `<num>` results per file
+* `-k or --knowntypes` only search files of known type
 * `-t or --type <type1[,type2...]>` only show results from file types listed
 * `-T or --notype <type1[,type2...]>` exclude results from file types listed
 * `-C or --nocolor` to turn off output coloring
