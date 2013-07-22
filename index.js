@@ -67,7 +67,8 @@ function wack(options) {
 
 function streamWack(settings) {
 
-  var policeArgs = {};
+  var policeArgs = {},
+      ignoreDirs = ['.git', '.hg', '.svn'];
 
   settings.types = settings.type ? settings.type.replace(/\s+/, '').split(',') : [];
   settings.exclude = settings.notype ? settings.notype.replace(/\s+/, '').split(',') : [];
@@ -105,7 +106,11 @@ function streamWack(settings) {
     }
   }
 
-  return es.pipeline(dirstream({ onlyFiles: true, noRecurse: settings.norecurse, ignore: ['.git', '.hg', '.svn'] }),
+  if (settings.ignoredir) {
+    ignoreDirs = ignoreDirs.concat(settings.ignoredir.replace(/\s+/g, '').split(','));
+  }
+
+  return es.pipeline(dirstream({ onlyFiles: true, noRecurse: settings.norecurse, ignore: ignoreDirs }),
                      police(policeArgs),
                      filestream(),
                      wack(settings));
@@ -116,6 +121,7 @@ if (isCli) {
     .version('0.1.4')
     .usage('[options] pattern')
     .option('-d, --dir <dirname>', 'search through directory | default cwd')
+    .option('-D, --ignoredir <dir1[,dir2...]>', 'comma separated list of directory names to ignore')
     .option('-i, --ignorecase', 'ignore regex case')
     .option('-k, --knowntypes', 'only include known file types')
     .option('-m, --maxcount <num>', 'only show maximum of <num> results per file', parseInt)
@@ -136,6 +142,7 @@ if (isCli) {
     norecurse: c.norecurse,
     invertmatch: c.invertmatch,
     type: c.type,
+    ignoredir: c.ignoredir,
     knowntypes: c.knowntypes,
     notype: c.notype,
     justone: c.justone,
