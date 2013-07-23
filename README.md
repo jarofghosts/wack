@@ -15,9 +15,9 @@ wack stands for Wack ACK
 
 ## usage
 
-`wack searchTerm`
+`wack searchPattern`
 
-will search the current dir (and recursively all sub dirs) for `searchTerm`
+will search the current dir (and recursively all sub dirs) for `searchPattern`
 
 Alternatively, you can pipe to wack with a stream of directory names and it will stream search results.
 
@@ -36,6 +36,7 @@ you get the idea. Note that `pattern` is required.
 ## options
 
 * `-d or --dir <dir>` search different dir.
+* `-D or --ignoredir <dir1[,dir2...]>` to ignore directories
 * `-i or --ignorecase` to ignore case
 * `-n or --norecurse` to prevent subdirectory search
 * `-m or --maxcount <num>` show max of `<num>` results per file
@@ -44,7 +45,7 @@ you get the idea. Note that `pattern` is required.
 * `-T or --notype <type1[,type2...]>` exclude results from file types listed
 * `-C or --nocolor` to turn off output coloring
 * `-1 or --justone` to only return the very first result
-* `-v or --invertmatch` to return lines that do **not** match the searchTerm
+* `-v or --invertmatch` to return lines that do **not** match the search pattern
 * `-h or --help` for help
 * `-V or --version` for version
 
@@ -52,7 +53,7 @@ for stream options, use the full flag name (ie `nocolor`, `ignorecase`, etc) and
 
 ## file types
 
-file types are exactly the same as ack, except I have added `markdown` which checks `.md` and `.markdown`.
+file types are exactly the same as ack, except I have added `markdown` (which checks `.md` and `.markdown`) and `json` (which checks `.json`).
 
 ## license
 
