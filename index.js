@@ -23,7 +23,7 @@ function wack(options) {
   
   if (!options.dir) options.dir = process.cwd();
   if (!options.dir.match(/^\//)) options.dir = path.normalize(options.dir);
-  options.regex = options.ignorecase ? new RegExp(options.pattern, "ig") : new RegExp(options.pattern, "g");
+  options.regex = new RegExp(options.pattern, 'g' + (options.ignorecase ? 'i' : ''));
   
   tr = through(write);
 
@@ -36,13 +36,13 @@ function wack(options) {
           fileOut = filename,
           toOutput;
       if (options.nocolor || options.invertmatch) {
-        toOutput = ' ' + line + ' ' + str + '\n';
+        toOutput = [' ', line, ' ', str, '\n'].join('');
       } else {
         fileOut = color.green(filename);
-        var finalString = str.substring(0, match.index) + 
-                          color.yellow(match[0], true) +
-                          str.substring(match.index + match[0].length),
-            toOutput = ' ' + color.wrap(line, color.colors.WHITE, color.styles.bold) + ' ' + finalString + '\n';
+        var finalString = [str.substring(0, match.index),
+                          color.yellow(match[0], true),
+                          str.substring(match.index + match[0].length)].join(''),
+            toOutput = [' ', color.wrap(line, color.colors.WHITE, color.styles.bold), ' ', finalString, '\n'].join('');
       
       }
 
