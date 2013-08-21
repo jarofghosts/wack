@@ -22,7 +22,7 @@ function wack(options) {
   options = options || {};
   
   if (!options.dir) options.dir = process.cwd();
-  if (!options.dir.match(/^\//)) options.dir = path.normalize(options.dir);
+  if (!/^\//.test(options.dir)) options.dir = path.normalize(options.dir);
   options.regex = new RegExp(options.pattern, 'g' + (options.ignorecase ? 'i' : ''));
   
   tr = through(write);
