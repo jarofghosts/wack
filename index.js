@@ -66,7 +66,15 @@ function wack(options) {
   return tr;
 
 }
-
+function addExtensionRegexps(extensions) {
+  var i = 0,
+      l = extensions.length,
+      result = [];
+  for (; i < l; ++i) {
+    result.push(new RegExp('\\.' + extensions[i] + '$', 'i'));
+  }
+  return result;
+}
 function streamWack(settings) {
 
   var policeArgs = {},
@@ -76,35 +84,22 @@ function streamWack(settings) {
   settings.exclude = settings.notype ? settings.notype.replace(/\s+/, '').split(',') : [];
 
   if (settings.knowntypes) {
-    policeArgs.verify = [];
-    var extensions = type.allExtensions(),
-        i = 0,
-        l = extensions.length;
-    for (; i < l; ++i) {
-      policeArgs.verify.push(new RegExp('\\.' + extensions[i] + '$', 'i'));
-    }
-
+    policeArgs.verify = [].concat(addExtensionRegexps(type.allExtensions));
   }
   if (settings.exclude.length) {
     policeArgs.exclude = [];
     var i = 0,
         l = settings.exclude.length;
     for (; i < l; ++i) {
-      var extensions = type.reverseLookup(settings.exclude[i]),
-          j = 0,
-          k = extensions.length;
-      policeArgs.exclude.push(new RegExp('\\.' + extensions[j] + '$', 'i'));
+      policeArgs.exclude = policeArgs.exclude.concat(type.reverseLookup(settings.exclude[i]));
     }
   }
   if (settings.types.length) {
     policeArgs.verify = policeArgs.verify || [];
-    var i = 0,
-        l = settings.types.length;
-    for (; i < l; ++i) {
-      var extensions = type.reverseLookup(settings.types[i]),
-          j = 0,
-          k = extensions.length;
-      policeArgs.verify.push(new RegExp('\\.' + extensions[j] + '$', 'i'));
+    var j = 0,
+        k = settings.types.length;
+    for (; j < k; ++j) {
+      policeArgs.verify = policeArgs.verify.concat(type.reverseLookup(settings.types[j]));
     }
   }
 
