@@ -17,7 +17,8 @@ module.exports = streamWack;
 function wack(options) {
 
   var currentFile = null,
-      fileCount = 0;
+      fileCount = 0,
+      badChars = /[\x00-\x1F\x80-\x9F]+/;
 
   options = options || {};
   
@@ -28,6 +29,7 @@ function wack(options) {
   tr = through(write);
 
   function write(obj) {
+    if (badChars.test(obj.data)) return;
     var match = options.regex.exec(obj.data);
     if ((match && !options.invertmatch) || (!match && options.invertmatch)) {
       var filename = obj.filename.substring(options.dir.length),
@@ -113,7 +115,6 @@ function streamWack(settings) {
   return es.pipeline(dirstream({ onlyFiles: true, noRecurse: settings.norecurse, ignore: ignoreDirs }),
                      police(policeArgs),
                      filestream(),
-                     police({ exclude: [/[^\x00-\x7F]+/] }),
                      wack(settings));
 }
 
