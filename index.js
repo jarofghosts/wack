@@ -113,6 +113,7 @@ function streamWack(settings) {
   return es.pipeline(dirstream({ onlyFiles: true, noRecurse: settings.norecurse, ignore: ignoreDirs }),
                      police(policeArgs),
                      filestream(),
+                     police({ exclude: [/[^\x00-\x7F]+/] }),
                      wack(settings));
 }
 
