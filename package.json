@@ -32,6 +32,6 @@
     "bash-color": "0.0.3",
     "ack-types": ">=0.0.1",
     "event-stream": "~3.0.16",
-    "stream-police": ">=0.0.2",
+    "stream-police": ">=0.0.2"
   }
 }
