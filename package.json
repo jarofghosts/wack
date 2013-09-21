@@ -1,6 +1,6 @@
 {
   "name": "wack",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "wack ack",
   "main": "index.js",
   "bin": {
@@ -33,6 +33,5 @@
     "ack-types": ">=0.0.1",
     "event-stream": "~3.0.16",
     "stream-police": ">=0.0.2",
-    "utf8": "~2.0.0"
   }
 }

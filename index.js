@@ -120,7 +120,7 @@ function streamWack(settings) {
 
 if (isCli) {
   c
-    .version('0.2.1')
+    .version('0.2.2')
     .usage('[options] pattern')
     .option('-d, --dir <dirname>', 'search through directory | default cwd')
     .option('-D, --ignoredir <dir1[,dir2...]>', 'comma separated list of directory names to ignore')
