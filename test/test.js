@@ -9,7 +9,7 @@ var assert = require('assert'),
 
 badTimeout = setTimeout(function () {
   assert.ok(false);
-}, 500);
+}, 100);
 
 ws._write = function (data, enc, next) {
   if (data.toString().match(/hey/)) clearTimeout(badTimeout);
