@@ -40,7 +40,7 @@ function wack(options) {
       if (options.nocolor || options.invertmatch) {
         toOutput = ['', line, str].join(' ')
       } else {
-        fileOut = color.green(filename);
+        fileOut = color.green(filename)
         var finalString = [str.substring(0, match.index),
                            color.yellow(match[0], true),
                            str.substring(match.index + match[0].length)
@@ -84,9 +84,9 @@ function streamWack(settings) {
       ignoreDirs = ['.git', '.hg', '.svn']
 
   settings.types = settings.type ?
-    settings.type.replace(/\s+/, '').split(',') : [];
+    settings.type.replace(/\s+/, '').split(',') : []
   settings.exclude = settings.notype ?
-    settings.notype.replace(/\s+/, '').split(',') : [];
+    settings.notype.replace(/\s+/, '').split(',') : []
 
   if (settings.knowntypes) {
     policeArgs.verify = [].concat(addExtensionRegexps(type.allExtensions))
@@ -123,5 +123,5 @@ function streamWack(settings) {
                                  ignore: ignoreDirs }),
                      police(policeArgs),
                      filestream(),
-                     wack(settings));
+                     wack(settings))
 }
