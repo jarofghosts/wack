@@ -97,7 +97,7 @@ function streamWack(settings) {
         l = settings.exclude.length
     for (; i < l; ++i) {
       policeArgs.exclude = policeArgs.exclude.concat(
-        type.reverseLookup(settings.exclude[i])
+        addExtensionRegexps(type.reverseLookup(settings.exclude[i]))
       )
     }
   }
@@ -107,7 +107,7 @@ function streamWack(settings) {
         k = settings.types.length
     for (; j < k; ++j) {
       policeArgs.verify = policeArgs.verify.concat(
-        type.reverseLookup(settings.types[j])
+        addExtensionRegexps(type.reverseLookup(settings.types[j]))
       )
     }
   }
