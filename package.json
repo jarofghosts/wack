@@ -4,7 +4,7 @@
   "description": "wack ack",
   "main": "index.js",
   "bin": {
-    "wack": "./index.js"
+    "wack": "./bin/wack"
   },
   "scripts": {
     "test": "node test/test.js && node test/type-test.js"

@@ -24,7 +24,7 @@ c
     'comma separated list of types to exclude from search')
   .option('-1, --justone', 'show only the first result')
   .option('-C, --nocolor', 'turn colorizing off for results')
-  .parse(process.argv);
+  .parse(process.argv)
 
 if (!c.args.length) c.help()
 
