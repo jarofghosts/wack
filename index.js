@@ -11,7 +11,6 @@ var through = require('through'),
 module.exports = streamWack
 
 function wack(options) {
-
   var currentFile = null,
       fileCount = 0,
       badChars = /[\x00-\x1F\x80-\x9F]+/

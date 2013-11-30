@@ -24,9 +24,17 @@ c
     'comma separated list of types to exclude from search')
   .option('-1, --justone', 'show only the first result')
   .option('-C, --nocolor', 'turn colorizing off for results')
+  .option('--thpppt', 'Bill the Cat')
   .parse(process.argv)
 
-if (!c.args.length) c.help()
+if (!c.args.length && !c.thpppt) c.help()
+if (c.thpppt) {
+return process.stdout.write(['  _   /|',
+    '  \\\'o.O\'',
+    '  =(___)=',
+    '     U    wack --thpppt!',
+    ''].join('\n'))
+}
 
 var settings = {
   dir: c.dir,
