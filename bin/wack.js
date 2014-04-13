@@ -1,10 +1,11 @@
 #!/usr/bin/env node
 
-var c = require('commander'),
-    Readable = require('stream').Readable,
-    streamWack = require('../'),
-    path = require('path'),
-    wack = require('../package.json')
+var Readable = require('stream').Readable
+  , path = require('path')
+
+var wack = require('../package.json')
+  , wack_stream = require('../')
+  , c = require('commander')
 
 c
   .version(wack.version)
@@ -27,8 +28,8 @@ c
   .option('--thpppt', 'Bill the Cat')
   .parse(process.argv)
 
-if (!c.args.length && !c.thpppt) c.help()
-if (c.thpppt) {
+if(!c.args.length && !c.thpppt) c.help()
+if(c.thpppt) {
 return process.stdout.write(['  _   /|',
     '  \\\'o.O\'',
     '  =(___)=',
@@ -37,18 +38,18 @@ return process.stdout.write(['  _   /|',
 }
 
 var settings = {
-  dir: c.dir,
-  ignorecase: c.ignorecase,
-  maxcount: c.maxcount,
-  norecurse: c.norecurse,
-  invertmatch: c.invertmatch,
-  type: c.type,
-  ignoredir: c.ignoredir,
-  knowntypes: c.knowntypes,
-  notype: c.notype,
-  justone: c.justone,
-  nocolor: c.nocolor,
-  pattern: c.args[0]
+    dir: c.dir
+  , ignorecase: c.ignorecase
+  , maxcount: c.maxcount
+  , norecurse: c.norecurse
+  , invertmatch: c.invertmatch
+  , type: c.type
+  , ignoredir: c.ignoredir
+  , knowntypes: c.knowntypes
+  , notype: c.notype
+  , justone: c.justone
+  , nocolor: c.nocolor
+  , pattern: c.args[0]
 }
 
 var rs = Readable()
@@ -56,4 +57,4 @@ var rs = Readable()
 rs.push(c.dir ? path.normalize(c.dir) : process.cwd())
 rs.push(null)
 
-rs.pipe(streamWack(settings)).pipe(process.stdout)
+rs.pipe(wack_stream(settings)).pipe(process.stdout)
