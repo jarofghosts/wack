@@ -1,13 +1,14 @@
 wack
 ====
 
-[![Build Status](https://travis-ci.org/jarofghosts/wack.png?branch=master)](https://travis-ci.org/jarofghosts/wack)
+[![Build Status](http://img.shields.io/travis/jarofghosts/wack.svg?style=flat)](https://travis-ci.org/jarofghosts/wack)
 
 wack stands for Wack ACK
 
 ## what?
 
-`wack` aims to be a bit like [ack](http://beyondgrep.com/) but implemented in node. It doesn't aim to be wack, but it kind of is at the moment.
+`wack` aims to be a bit like [ack](http://beyondgrep.com/) but implemented in
+node. It doesn't aim to be wack, but it kind of is at the moment.
 
 ## installation
 
@@ -19,16 +20,29 @@ wack stands for Wack ACK
 
 will search the current dir (and recursively all sub dirs) for `searchPattern`
 
-Alternatively, you can pipe to wack with a stream of directory names and it will stream search results.
+Alternatively, you can write directory names to wack and it will stream search
+results.
 
-That looks kinda like this (assuming an imaginary file of directory names \n separated):
+That looks kinda like this:
 
 ```js
-var wack = require('wack'),
-    split = require('split'),
-    fs = require('fs');
+var concat = require('concat-stream')
+  , wack = require('wack')
 
-fs.createReadStream('lyricDirs.txt').pipe(split()).pipe(wack({ pattern: 'blitzkrieg bop' })).pipe(fs.createWriteStream('ramones.txt'));
+var wack_stream = wack({pattern: 'Sheena'})
+
+wack_stream.pipe(concat(dump))
+
+wack_stream.write('./ramones_albums/')
+
+function dump(data) {
+  console.log(data)
+// {
+//     filename: /current/dir/ramones-albums/rocket-to-russia.txt
+//   , context: 'Sheena Is a Punk Rocker'
+//   , line: 6
+//   , match: ['Sheena', index: 0, input: 'Sheena Is a Punk Rocker']
+// }
 ```
 
 you get the idea. Note that `pattern` is required.
@@ -49,13 +63,14 @@ you get the idea. Note that `pattern` is required.
 * `-h or --help` for help
 * `-V or --version` for version
 
-for stream options, use the full flag name (ie `nocolor`, `ignorecase`, etc) and `pattern` for the search pattern.
+for stream options, use the full flag name (ie `ignorecase`, `invertmatch`,
+etc) and `pattern` for the search pattern.
 
 ## file types
 
-file types are exactly the same as ack, except I have added `markdown` (which checks `.md` and `.markdown`) and `json` (which checks `.json`).
+file types are exactly the same as ack, except I have added `markdown` (which
+checks `.md`, `.mkd`, and `.markdown`) and `json` (which checks `.json`).
 
 ## license
 
 MIT
-
