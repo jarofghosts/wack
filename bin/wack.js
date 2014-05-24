@@ -1,60 +1,78 @@
 #!/usr/bin/env node
 
-var Readable = require('stream').Readable
-  , path = require('path')
+var path = require('path')
+  , fs = require('fs')
 
-var wack = require('../package.json')
-  , wack_stream = require('../')
-  , c = require('commander')
+var nopt = require('nopt')
 
-c
-  .version(wack.version)
-  .usage('[options] pattern')
-  .option('-d, --dir <dirname>', 'search through directory | default cwd')
-  .option('-D, --ignoredir <dir1[,dir2...]>',
-    'comma separated list of directory names to ignore')
-  .option('-i, --ignorecase', 'ignore regex case')
-  .option('-k, --knowntypes', 'only include known file types')
-  .option('-m, --maxcount <num>',
-    'only show maximum of <num> results per file', parseInt)
-  .option('-n, --norecurse', 'no subdirectory checking')
-  .option('-v, --invertmatch', 'show non-matching lines')
-  .option('-t, --type <type1[,type2...]>',
-    'comma separated list of types to limit search to')
-  .option('-T, --notype <type1[,type2...]>',
-    'comma separated list of types to exclude from search')
-  .option('-1, --justone', 'show only the first result')
-  .option('-C, --nocolor', 'turn colorizing off for results')
-  .option('--thpppt', 'Bill the Cat')
-  .parse(process.argv)
+var wackage = require('../package.json')
+  , wack = require('../')
+  , wack_stream
 
-if(!c.args.length && !c.thpppt) c.help()
-if(c.thpppt) {
-return process.stdout.write(['  _   /|',
-    '  \\\'o.O\'',
-    '  =(___)=',
-    '     U    wack --thpppt!',
-    ''].join('\n'))
+var noptions = {
+    dir: String
+  , ignoredir: String
+  , ignorecase: Boolean
+  , knowntypes: Boolean
+  , maxcount: Number
+  , norecurse: Boolean
+  , invertmatch: Boolean
+  , type: String
+  , notype: String
+  , justone: Boolean
+  , nocolor: Boolean
+  , thpppt: Boolean
+  , version: Boolean
+  , help: Boolean
 }
 
-var settings = {
-    dir: c.dir
-  , ignorecase: c.ignorecase
-  , maxcount: c.maxcount
-  , norecurse: c.norecurse
-  , invertmatch: c.invertmatch
-  , type: c.type
-  , ignoredir: c.ignoredir
-  , knowntypes: c.knowntypes
-  , notype: c.notype
-  , justone: c.justone
-  , nocolor: c.nocolor
-  , pattern: c.args[0]
+var shorts = {
+    d: ['--dir']
+  , D: ['--ignoredir']
+  , i: ['--ignorecase']
+  , k: ['--knowntypes']
+  , m: ['--maxcount']
+  , n: ['--norecurse']
+  , v: ['--invertmatch']
+  , t: ['--type']
+  , T: ['--notype']
+  , '1': ['--justone']
+  , C: ['--nocolor']
+  , h: ['--help']
+  , V: ['--version']
 }
 
-var rs = Readable()
+var options = nopt(noptions, shorts, process.argv)
 
-rs.push(c.dir ? path.normalize(c.dir) : process.cwd())
-rs.push(null)
+options.pattern = options.argv.remain[0]
 
-rs.pipe(wack_stream(settings)).pipe(process.stdout)
+if(options.version) return version()
+if(options.help) return help()
+if(options.thpppt) return cat()
+if(!options.pattern) return help()
+
+function version() {
+  console.log('wack version ' + wackage.version)
+}
+
+function help() {
+  version()
+  fs.createReadStream(path.join(__dirname, '..', 'help.txt'))
+    .pipe(process.stdout)
+}
+
+function cat() {
+  process.stdout.write([
+      '  _   /|'
+    , '  \\\'o.O\''
+    , '  =(___)='
+    , '     U    wack --thpppt!'
+    , ''
+  ].join('\n'))
+}
+
+wack_stream = wack(options)
+
+wack_stream.pipe(wack_stream.prettify()).pipe(process.stdout)
+
+wack_stream.write(options.dir || process.cwd())

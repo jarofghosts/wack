@@ -1,5 +1,4 @@
-var Readable = require('stream').Readable
-  , path = require('path')
+var path = require('path')
 
 var filestream = require('file-content-stream')
   , dirstream = require('dir-stream')
@@ -13,8 +12,7 @@ module.exports = wack_stream
 
 function wack(options) {
   var bad_chars = /[\x00-\x1F\x80-\x9F]+/
-    , current_file = null
-    , file_count = 0
+    , tr
 
   options = options || {}
   
@@ -31,6 +29,8 @@ function wack(options) {
   return tr
 
   function write(obj) {
+    var result = {}
+
     if(bad_chars.test(obj.data)) return
 
     var match = options.regex.exec(obj.data)
@@ -39,31 +39,12 @@ function wack(options) {
       return
     }
 
-    var filename = obj.filename.substring(options.dir.length)
-      , line = obj.line + ':'
-      , file_out = filename
-      , str = obj.data
-      , to_output
+    result.filename = obj.filename
+    result.line = obj.line
+    result.context = obj.data
+    result.match = match
 
-    if (options.nocolor || options.invertmatch) {
-      to_output = ' ' + line + ' ' + str
-    } else {
-      file_out = color.green(filename)
-      var final_string = str.slice(0, match.index)
-      final_string += color.yellow(match[0], true)
-      final_string += str.slice(match.index + match[0].length)
-
-      to_output = ' ' +color.wrap(line, color.colors.WHITE, color.styles.bold)
-      to_output += final_string
-    }
-
-    if(filename !== current_file) {
-      file_count = 1
-      current_file = filename
-      this.queue(file_out + '\n')
-    } else if(options.maxcount && ++file_count > options.maxcount) return
-
-    this.queue(to_output + '\n')
+    tr.queue(result)
     if(options.justone) tr.queue(null)
   }
 }
@@ -71,14 +52,58 @@ function wack(options) {
 function add_extension_rexes(extensions) {
   var result = []
 
-  for (var i = 0, l = extensions.length; i < l; ++i) {
+  for(var i = 0, l = extensions.length; i < l; ++i) {
     result.push(new RegExp('\\.' + extensions[i] + '$', 'i'))
   }
 
   return result
 }
 
-function wack_stream(settings) {
+function prettify(options) {
+  return pretty_stream
+
+  function pretty_stream() {
+    var tr = through(pretty)
+      , file_count = 0
+      , current_file
+
+    return tr
+
+    function pretty(obj) {
+      var filename = obj.filename.slice(options.dir.length)
+        , line = obj.line + ':'
+        , file_out = filename
+        , str = obj.context
+        , final_string
+        , to_output
+
+      if(options.nocolor || options.invertmatch) {
+        to_output = ' ' + line + ' ' + str
+      } else {
+        file_out = color.green(filename)
+        final_string = str.slice(0, obj.match.index)
+        final_string += color.yellow(obj.match[0], true)
+        final_string += str.slice(obj.match.index + obj.match[0].length)
+
+        to_output = ' ' +
+            color.wrap(line, color.colors.WHITE, color.styles.bold)
+
+        to_output += final_string
+      }
+
+      if(filename !== current_file) {
+        file_count = 1
+        current_file = filename
+        tr.queue(file_out + '\n')
+      } else if(options.maxcount && ++file_count > options.maxcount) return
+
+      tr.queue(to_output + '\n')
+    }
+  }
+}
+
+function wack_stream(_settings) {
+  var settings = _settings || {}
   var ignore_dirs = ['.git', '.hg', '.svn']
     , police_args = {}
 
@@ -117,7 +142,7 @@ function wack_stream(settings) {
     )
   }
 
-  return es.pipeline(
+  var stream = es.pipeline(
       dirstream({
           onlyFiles: true
         , noRecurse: settings.norecurse
@@ -127,4 +152,8 @@ function wack_stream(settings) {
     , filestream()
     , wack(settings)
   )
+
+  stream.prettify = prettify(settings)
+
+  return stream
 }

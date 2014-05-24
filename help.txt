@@ -1,0 +1,17 @@
+==============================================================================
+usage: wack [options] pattern
+
+options:
+-d, --dir <dirname>                     search files in <dirname>, default cwd
+-D, --ignoredir <dir1[,dir2...]>        list of directory names to ignore
+-i, --ignorecase                        ignore case for match
+-k, --knowntypes                        only include known file types
+-m, --maxcount <num>                    maximum of <num> results per file
+-n, --norecurse                         no subdirectory checking
+-v, --invertmatch',                     only show non-matching lines
+-t, --type <type1[,type2...]>           list of file types to limit search to
+-T, --notype <type1[,type2...]>         list of file types to exclude
+-1, --justone                           only show the first result
+-C, --nocolor                           turn colorizing off for results
+--thpppt                                Bill the Cat
+
