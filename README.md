@@ -43,6 +43,7 @@ function dump(data) {
 //   , line: 6
 //   , match: ['Sheena', index: 0, input: 'Sheena Is a Punk Rocker']
 // }
+}
 ```
 
 you get the idea. Note that `pattern` is required.
