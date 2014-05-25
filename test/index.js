@@ -81,7 +81,7 @@ test('supports justone', function(t) {
     , matches = 0
 
   stream.on('data', function(data) {
-    matches++
+    ++matches
   })
 
   stream.on('end', function() {
@@ -98,7 +98,7 @@ test('supports maxcount', function(t) {
     , matches = 0
 
   stream.on('data', function(data) {
-    matches++
+    ++matches
   })
 
   stream.on('end', function() {
@@ -106,4 +106,21 @@ test('supports maxcount', function(t) {
   })
 
   stream.write(path.join(__dirname, 'test-dir'))
+})
+
+test('can search only specific types', function(t) {
+  t.plan(1)
+
+  var stream = wack({pattern: 'p', type: 'js'})
+    , count = 0
+
+  stream.on('data', function(data) {
+    ++count
+  })
+
+  stream.on('end', function() {
+    t.strictEqual(count, 1)
+  })
+
+  stream.write(path.join(__dirname, 'test-type-dir'))
 })
