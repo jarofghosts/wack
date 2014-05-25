@@ -2,6 +2,7 @@ wack
 ====
 
 [![Build Status](http://img.shields.io/travis/jarofghosts/wack.svg?style=flat)](https://travis-ci.org/jarofghosts/wack)
+[![npm install](http://img.shields.io/npm/dm/wack.svg?style=flat)](https://www.npmjs.org/package/wack)
 
 wack stands for Wack ACK
 
