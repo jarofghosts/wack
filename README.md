@@ -8,7 +8,7 @@ wack stands for Wack ACK
 ## what?
 
 `wack` aims to be a bit like [ack](http://beyondgrep.com/) but implemented in
-node. It doesn't aim to be wack, but it kind of is at the moment.
+node. it doesn't aim to be wack, but it kind of is at the moment.
 
 ## installation
 
@@ -20,10 +20,28 @@ node. It doesn't aim to be wack, but it kind of is at the moment.
 
 will search the current dir (and recursively all sub dirs) for `searchPattern`
 
-Alternatively, you can write directory names to wack and it will stream search
+### options
+
+* `-d or --dir <dir>` search different dir.
+* `-D or --ignoredir <dir1[,dir2...]>` to ignore directories
+* `-i or --ignorecase` to ignore case
+* `-n or --norecurse` to prevent subdirectory search
+* `-m or --maxcount <num>` show max of `<num>` results per file
+* `-k or --knowntypes` only search files of known type
+* `-t or --type <type1[,type2...]>` only show results from file types listed
+* `-T or --notype <type1[,type2...]>` exclude results from file types listed
+* `-C or --nocolor` to turn off output coloring
+* `-1 or --justone` to only return the very first result
+* `-v or --invertmatch` to return lines that do **not** match the search pattern
+* `-h or --help` for help
+* `-V or --version` for version
+
+## as a module
+
+alternatively, you can write directory names to wack and it will stream search
 results.
 
-That looks kinda like this:
+that looks kinda like this:
 
 ```js
 var concat = require('concat-stream')
@@ -45,24 +63,6 @@ function dump(data) {
 // }
 }
 ```
-
-you get the idea. Note that `pattern` is required.
-
-## options
-
-* `-d or --dir <dir>` search different dir.
-* `-D or --ignoredir <dir1[,dir2...]>` to ignore directories
-* `-i or --ignorecase` to ignore case
-* `-n or --norecurse` to prevent subdirectory search
-* `-m or --maxcount <num>` show max of `<num>` results per file
-* `-k or --knowntypes` only search files of known type
-* `-t or --type <type1[,type2...]>` only show results from file types listed
-* `-T or --notype <type1[,type2...]>` exclude results from file types listed
-* `-C or --nocolor` to turn off output coloring
-* `-1 or --justone` to only return the very first result
-* `-v or --invertmatch` to return lines that do **not** match the search pattern
-* `-h or --help` for help
-* `-V or --version` for version
 
 for stream options, use the full flag name (ie `ignorecase`, `invertmatch`,
 etc) and `pattern` for the search pattern.
