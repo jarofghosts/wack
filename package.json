@@ -26,8 +26,8 @@
   "preferGlobal": true,
   "dependencies": {
     "through": "2.3.4",
-    "file-content-stream": "0.0.12",
-    "dir-stream": "0.0.16",
+    "file-content-stream": "0.0.15",
+    "dir-stream": "0.0.17",
     "bash-color": "0.0.3",
     "ack-types": "^0.1.0",
     "event-stream": "3.0.16",

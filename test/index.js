@@ -23,6 +23,23 @@ test('finds text in file', function(t) {
   stream.write(path.join(__dirname, 'test-dir'))
 })
 
+test('can search only known types', function(t) {
+  t.plan(1)
+
+  var stream = wack({pattern: 'here', knowntypes: true})
+    , count = 0
+
+  stream.on('data', function(data) {
+    ++count
+  })
+
+  stream.on('end', function() {
+    t.strictEqual(count, 0)
+  })
+
+  stream.write(path.join(__dirname, 'test-dir'))
+})
+
 test('finds text in file', function(t) {
   t.plan(3)
 

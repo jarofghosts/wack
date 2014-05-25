@@ -23,7 +23,7 @@ function wack_stream(_settings) {
       settings.notype.split(',') : []
 
   if(settings.knowntypes) {
-    police_args.verify = add_extension_rexes(type.allExtensions)
+    police_args.verify = add_extension_rexes(type.allExtensions())
   }
 
   if(settings.exclude.length) {
@@ -77,4 +77,3 @@ function add_extension_rexes(extensions) {
 
   return result
 }
-
