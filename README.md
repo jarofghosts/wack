@@ -44,8 +44,7 @@ results.
 that looks kinda like this:
 
 ```js
-var concat = require('concat-stream')
-  , wack = require('wack')
+var wack = require('wack')
 
 var wack_stream = wack({pattern: 'Sheena'})
 
