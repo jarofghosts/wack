@@ -17,10 +17,13 @@ function wack_stream(_settings) {
     , settings = _settings || {}
     , police_args = {}
 
-  settings.types = settings.type ?
-      settings.type.split(',') : []
-  settings.exclude = settings.notype ?
-      settings.notype.split(',') : []
+  var dir_filter_stream
+    , stream
+    , i
+    , l
+
+  settings.types = settings.type ? settings.type.split(',') : []
+  settings.exclude = settings.notype ? settings.notype.split(',') : []
 
   if(settings.knowntypes) {
     police_args.verify = add_extension_rexes(type.allExtensions())
@@ -29,7 +32,7 @@ function wack_stream(_settings) {
   if(settings.exclude.length) {
     police_args.exclude = []
 
-    for(var i = 0, l = settings.exclude.length; i < l; ++i) {
+    for(i = 0, l = settings.exclude.length; i < l; ++i) {
       police_args.exclude = police_args.exclude.concat(
         add_extension_rexes(type.reverseLookup(settings.exclude[i]))
       )
@@ -39,9 +42,9 @@ function wack_stream(_settings) {
   if(settings.types.length) {
     police_args.verify = police_args.verify || []
 
-    for(j = 0, k = settings.types.length; j < k; ++j) {
+    for(i = 0, l = settings.types.length; i < l; ++i) {
       police_args.verify = police_args.verify.concat(
-        add_extension_rexes(type.reverseLookup(settings.types[j]))
+        add_extension_rexes(type.reverseLookup(settings.types[i]))
       )
     }
   }
@@ -50,13 +53,13 @@ function wack_stream(_settings) {
     ignore_dirs = ignore_dirs.concat(settings.ignoredir.split(','))
   }
 
-  var dir_filter_stream = dirstream({
+  dir_filter_stream = dirstream({
       onlyFiles: true
     , noRecurse: settings.norecurse
     , ignore: ignore_dirs
   })
 
-  var stream = es.pipeline(
+  stream = es.pipeline(
       dir_filter_stream
     , police(police_args)
     , filestream()
