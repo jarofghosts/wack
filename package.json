@@ -32,7 +32,8 @@
     "ack-types": "^0.1.0",
     "event-stream": "3.0.16",
     "stream-police": "0.0.5",
-    "nopt": "^2.2.1"
+    "nopt": "^2.2.1",
+    "quotemeta": "0.0.0"
   },
   "devDependencies": {
     "tape": "^2.13.1"
