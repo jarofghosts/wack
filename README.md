@@ -49,7 +49,7 @@ var wack = require('wack')
 
 var wack_stream = wack({pattern: 'Sheena'})
 
-wack_stream.pipe(concat(dump))
+wack_stream.on('data', dump)
 
 wack_stream.write('./ramones_albums/')
 
