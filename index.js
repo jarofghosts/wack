@@ -1,9 +1,6 @@
-var path = require('path')
-
 var filestream = require('file-content-stream')
   , dirstream = require('dir-stream')
   , police = require('stream-police')
-  , through = require('through')
   , es = require('event-stream')
   , type = require('ack-types')
 
@@ -13,11 +10,11 @@ var prettify = require('./lib/pretty-stream')
 module.exports = wack_stream
 
 function wack_stream(_settings) {
-  var ignore_dirs = ['.git', '.hg', '.svn']
+  var ignoreDirs = ['.git', '.hg', '.svn']
     , settings = _settings || {}
-    , police_args = {}
+    , policeArgs = {}
 
-  var dir_filter_stream
+  var dirFilterStream
     , stream
     , i
     , l
@@ -26,42 +23,42 @@ function wack_stream(_settings) {
   settings.exclude = settings.notype ? settings.notype.split(',') : []
 
   if(settings.knowntypes) {
-    police_args.verify = add_extension_rexes(type.allExtensions())
+    policeArgs.verify = addExtensionRexes(type.allExtensions())
   }
 
   if(settings.exclude.length) {
-    police_args.exclude = []
+    policeArgs.exclude = []
 
     for(i = 0, l = settings.exclude.length; i < l; ++i) {
-      police_args.exclude = police_args.exclude.concat(
-        add_extension_rexes(type.reverseLookup(settings.exclude[i]))
+      policeArgs.exclude = policeArgs.exclude.concat(
+        addExtensionRexes(type.reverseLookup(settings.exclude[i]))
       )
     }
   }
 
   if(settings.types.length) {
-    police_args.verify = police_args.verify || []
+    policeArgs.verify = policeArgs.verify || []
 
     for(i = 0, l = settings.types.length; i < l; ++i) {
-      police_args.verify = police_args.verify.concat(
-        add_extension_rexes(type.reverseLookup(settings.types[i]))
+      policeArgs.verify = policeArgs.verify.concat(
+        addExtensionRexes(type.reverseLookup(settings.types[i]))
       )
     }
   }
 
   if(settings.ignoredir) {
-    ignore_dirs = ignore_dirs.concat(settings.ignoredir.split(','))
+    ignoreDirs = ignoreDirs.concat(settings.ignoredir.split(','))
   }
 
-  dir_filter_stream = dirstream({
+  dirFilterStream = dirstream({
       onlyFiles: true
     , noRecurse: settings.norecurse
-    , ignore: ignore_dirs
+    , ignore: ignoreDirs
   })
 
   stream = es.pipeline(
-      dir_filter_stream
-    , police(police_args)
+      dirFilterStream
+    , police(policeArgs)
     , filestream()
     , wack(settings)
   )
@@ -71,7 +68,7 @@ function wack_stream(_settings) {
   return stream
 }
 
-function add_extension_rexes(extensions) {
+function addExtensionRexes(extensions) {
   var result = []
 
   for(var i = 0, l = extensions.length; i < l; ++i) {
