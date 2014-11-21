@@ -7,9 +7,9 @@ var filestream = require('file-content-stream')
 var prettify = require('./lib/pretty-stream')
   , wack = require('./lib/match-stream')
 
-module.exports = wack_stream
+module.exports = wackStream
 
-function wack_stream(_settings) {
+function wackStream(_settings) {
   var ignoreDirs = ['.git', '.hg', '.svn']
     , settings = _settings || {}
     , policeArgs = {}
