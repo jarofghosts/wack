@@ -25,15 +25,15 @@
   },
   "preferGlobal": true,
   "dependencies": {
-    "through": "2.3.4",
-    "file-content-stream": "0.0.15",
-    "dir-stream": "0.0.17",
-    "bash-color": "0.0.3",
     "ack-types": "^0.1.0",
-    "event-stream": "3.0.16",
-    "stream-police": "0.0.5",
+    "bash-color": "0.0.3",
+    "dir-stream": "^1.0.0",
+    "duplexify": "^3.2.0",
+    "file-content-stream": "^1.0.0",
     "nopt": "^2.2.1",
-    "quotemeta": "0.0.0"
+    "quotemeta": "0.0.0",
+    "stream-police": "^1.0.0",
+    "through2": "^0.6.3"
   },
   "devDependencies": {
     "tape": "^2.13.1"

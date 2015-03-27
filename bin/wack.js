@@ -7,7 +7,8 @@ var nopt = require('nopt')
 
 var wackage = require('../package.json')
   , wack = require('../')
-  , wack_stream
+
+var wackStream
 
 var noptions = {
     dir: String
@@ -71,8 +72,8 @@ function cat() {
   ].join('\n'))
 }
 
-wack_stream = wack(options)
+wackStream = wack(options)
 
-wack_stream.pipe(wack_stream.prettify()).pipe(process.stdout)
+wackStream.pipe(wackStream.prettify()).pipe(process.stdout)
 
-wack_stream.write(options.dir || process.cwd())
+wackStream.write(options.dir || process.cwd())
