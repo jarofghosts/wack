@@ -8,7 +8,6 @@ var nopt = require('nopt')
 var wackage = require('../package.json')
 var wack = require('../')
 
-
 var noptions = {
   dir: String,
   ignoredir: String,
@@ -72,7 +71,7 @@ function bin () {
 }
 
 function version () {
-  console.log('wack version ' + wackage.version)
+  console.error('wack version ' + wackage.version)
 }
 
 function help () {
