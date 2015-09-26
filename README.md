@@ -1,8 +1,10 @@
-wack
-====
+# wack
 
-[![Build Status](http://img.shields.io/travis/jarofghosts/wack.svg?style=flat)](https://travis-ci.org/jarofghosts/wack)
-[![npm install](http://img.shields.io/npm/dm/wack.svg?style=flat)](https://www.npmjs.org/package/wack)
+[![Build Status](https://img.shields.io/travis/jarofghosts/wack.svg?style=flat-square)](https://travis-ci.org/jarofghosts/wack)
+[![npm install](https://img.shields.io/npm/dm/wack.svg?style=flat-square)](https://www.npmjs.org/package/wack)
+[![npm version](https://img.shields.io/npm/v/wack.svg?style=flat-square)](https://www.npmjs.org/package/wack)
+[![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat-square)](https://github.com/feross/standard)
+[![License](https://img.shields.io/npm/l/wack.svg?style=flat-square)](https://github.com/jarofghosts/wack/blob/master/LICENSE)
 
 wack stands for Wack ACK
 
@@ -53,13 +55,13 @@ wack_stream.on('data', dump)
 
 wack_stream.write('./ramones_albums/')
 
-function dump(data) {
+function dump (data) {
   console.log(data)
 // {
-//     filename: /current/dir/ramones-albums/rocket-to-russia.txt
-//   , context: 'Sheena Is a Punk Rocker'
-//   , line: 6
-//   , match: ['Sheena', index: 0, input: 'Sheena Is a Punk Rocker']
+//   filename: '/current/dir/ramones-albums/rocket-to-russia.txt',
+//   context: 'Sheena Is a Punk Rocker',
+//   line: 6,
+//   match: ['Sheena', index: 0, input: 'Sheena Is a Punk Rocker']
 // }
 }
 ```
